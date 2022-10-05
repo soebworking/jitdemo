@@ -16,6 +16,7 @@ import java.util.UUID;
 @Setter
 public class User {
 
+    //Updated id from binary to text/human-readable form
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
