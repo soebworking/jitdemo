@@ -32,7 +32,7 @@ public class UserController {
             if(null != userId && userId.equalsIgnoreCase("true") ){
                 //user already exist
                 User updateUser = new User();
-                updateUser.setId(user.getId());
+                updateUser.setUserId(user.getUserId());
                 updateUser.setCreatedOn(user.getCreatedOn());
                 updateUser.setEmail(user.getEmail());
                 updateUser.setFirstName(user.getFirstName());
