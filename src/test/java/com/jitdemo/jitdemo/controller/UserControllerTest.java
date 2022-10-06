@@ -78,4 +78,28 @@ class UserControllerTest {
     }
 
 
+    @Test
+    void addMobiileLocation() throws Exception{
+
+        String userMobileLocation = "{" +
+                "    \"userId\": \"d5b04122-b1a7-4047-80ae-7fa97ce34b4b\"," +
+                "    \"createdOn\": \"2022-02-08T11:44:00.524\"," +
+                "    \"location\": " +
+                "    {" +
+                "        \"latitude\": 52.25742342295784," +
+                "        \"longitude\": 10.540583401747602 " +
+                "    }" +
+                "}";
+
+
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+
+        ResponseEntity<?> responseEntity = userController.addMobiileLocation(userMobileLocation);
+        assertThat(responseEntity.getStatusCodeValue()).isEqualTo(208);
+
+    }
+
+
+
 }
