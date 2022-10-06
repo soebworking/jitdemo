@@ -30,10 +30,6 @@ public class UserServiceTest {
     @InjectMocks
     private UserService userService;
 
-    private User user;
-
-
-
 
     @Test
     public void userSave() throws ParseException {
