@@ -48,16 +48,10 @@ class UserControllerTest {
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
 
-        User usertoAdd = new User(null, cDate, "junit@test.com",
+        User userToAdd = new User(null, cDate, "junit@test.com",
                 "junitFirstName", "junitSecondName" );
 
-        // Creating Object of ObjectMapper define in Jackson API
-        ObjectMapper Obj = new ObjectMapper();
-
-        // Converting the Java object into a JSON string
-        String jsonStr = Obj.writeValueAsString(usertoAdd);
-
-        ResponseEntity<?> responseEntity = userController.addUser(usertoAdd);
+        ResponseEntity<?> responseEntity = userController.addUser(userToAdd);
         assertThat(responseEntity.getStatusCodeValue()).isEqualTo(201);
 
     }
@@ -75,16 +69,10 @@ class UserControllerTest {
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
 
-        User usertoAdd = new User(UUID.randomUUID(), cDate, "junit@test.com",
+        User userToAdd = new User(UUID.randomUUID(), cDate, "junit@test.com",
                 "junitFirstName", "junitSecondName" );
 
-        // Creating Object of ObjectMapper define in Jackson API
-        ObjectMapper Obj = new ObjectMapper();
-
-        // Converting the Java object into a JSON string
-        String jsonStr = Obj.writeValueAsString(usertoAdd);
-
-        ResponseEntity<?> responseEntity = userController.addUser(usertoAdd);
+        ResponseEntity<?> responseEntity = userController.addUser(userToAdd);
         assertThat(responseEntity.getStatusCodeValue()).isEqualTo(201);
 
     }
