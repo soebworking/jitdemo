@@ -1,5 +1,8 @@
 package com.jitdemo.jitdemo.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jitdemo.jitdemo.controller.dto.mobileLocation.MobiileUser;
 import com.jitdemo.jitdemo.model.User;
 import com.jitdemo.jitdemo.service.UserService;
 import org.slf4j.Logger;
@@ -11,8 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 public class UserController {
@@ -22,6 +25,7 @@ public class UserController {
     private UserService userService;
 
 
+    //funcation to create OR update user
     @PostMapping("/user/add")
     public ResponseEntity<String> addUser(@RequestBody User user){
         ResponseEntity<String> response = null;
@@ -55,6 +59,28 @@ public class UserController {
     }
 
 
+
+    //funcation to handle mobile request
+    @PostMapping("/user/add/mobileLoc")
+    public ResponseEntity<String> addMobiileLocation(@RequestBody String userMobileLocation) throws JsonProcessingException {
+        ResponseEntity<String> responseEntity = null;
+        ObjectMapper objectMapper = new ObjectMapper();
+        MobiileUser mobiileUser = objectMapper.readValue(userMobileLocation, MobiileUser.class);
+        //first check whether given id exist or not
+        logger.info(" => " + userMobileLocation);
+        logger.info(" => " + mobiileUser.getLocation().getLongitude());
+
+
+        UUID userId = UUID.fromString(mobiileUser.getUserId()); // wrapper since we're receiving Json as String
+        Optional<User> user = userService.checkUserById(userId);
+        if(null != user){
+
+        }
+        logger.info("chkUserExist => " + user.get().getUserId());
+        return responseEntity;
+
+
+    }
 
 
 
