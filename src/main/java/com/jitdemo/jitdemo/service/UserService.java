@@ -26,8 +26,8 @@ public class UserService {
 
     }
 
-    public Optional<User> checkUserById(UUID uuid){
-        return userRepository.findById(uuid);
+    public boolean checkUserById(UUID uuid){
+        return userRepository.findById(uuid).isPresent();
     }
 
 }

@@ -72,11 +72,16 @@ public class UserController {
 
 
         UUID userId = UUID.fromString(mobiileUser.getUserId()); // wrapper since we're receiving Json as String
-        Optional<User> user = userService.checkUserById(userId);
-        if(null != user){
+        boolean userExist = userService.checkUserById(userId);
 
+        if(userExist){
+            //user exist so insert records to database
+
+
+
+        }else {
+            logger.info("user {} not found in the database", userId);
         }
-        logger.info("chkUserExist => " + user.get().getUserId());
         return responseEntity;
 
 
