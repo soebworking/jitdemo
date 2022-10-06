@@ -30,4 +30,8 @@ public class UserService {
         return userRepository.findById(uuid).isPresent();
     }
 
+
+    public Optional<User> getUserById(UUID uuid){
+        return userRepository.findById(uuid);
+    }
 }
