@@ -1,7 +1,9 @@
 package com.jitdemo.jitdemo.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
@@ -14,6 +16,8 @@ import java.util.UUID;
 @Table(name = "user")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
 
     //Updated id from binary to text/human-readable form

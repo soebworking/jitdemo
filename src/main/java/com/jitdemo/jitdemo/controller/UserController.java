@@ -23,9 +23,33 @@ public class UserController {
 
 
     @PostMapping("/user/add")
-    public ResponseEntity<?> addUser(@RequestBody User user){
-        ResponseEntity<?> response = null;
+    public ResponseEntity<String> addUser(@RequestBody User user){
+        ResponseEntity<String> response = null;
+        String userId = userService.checkUserByEmail(user.getEmail());
 
+        try{
+            //first check whether user exists or not
+            if(null != userId && userId.equalsIgnoreCase("true") ){
+                //user already exist
+                User updateUser = new User();
+                updateUser.setId(user.getId());
+                updateUser.setCreatedOn(user.getCreatedOn());
+                updateUser.setEmail(user.getEmail());
+                updateUser.setFirstName(user.getFirstName());
+                updateUser.setSecondName(user.getSecondName());
+                userService.userSave(updateUser);
+                response = ResponseEntity.status(HttpStatus.ALREADY_REPORTED).body("User " + user.getEmail() + " successfully updated");
+                logger.info("User successfully updated " + user.getEmail());
+            }else {
+                //create new user
+                userService.userSave(user);
+                response =  ResponseEntity.status(HttpStatus.CREATED).body("User " + user.getEmail() + " successfully created");
+            }
+        }catch(Exception e){
+            logger.error("An ERROR occur while creating user.", e.getMessage());
+            response =  ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("User " + user.getEmail() + " failed");
+
+        }
 
         return response;
     }
