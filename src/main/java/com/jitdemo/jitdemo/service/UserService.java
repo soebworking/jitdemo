@@ -14,6 +14,7 @@ import java.util.UUID;
 @Transactional
 public class UserService {
 
+    //TODO:XXX exception handling pending
     @Autowired
     private UserRepository userRepository;
 
