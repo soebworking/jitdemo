@@ -3,7 +3,10 @@ package com.jitdemo.jitdemo.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jitdemo.jitdemo.controller.dto.mobileLocation.MobiileUser;
+import com.jitdemo.jitdemo.model.Locations;
 import com.jitdemo.jitdemo.model.User;
+import com.jitdemo.jitdemo.repository.LocationRepository;
+import com.jitdemo.jitdemo.service.LocationService;
 import com.jitdemo.jitdemo.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,10 +23,11 @@ import java.util.UUID;
 @RestController
 public class UserController {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private LocationService locationService;
 
     //funcation to create OR update user
     @PostMapping("/user/add")
@@ -43,14 +47,12 @@ public class UserController {
                 updateUser.setSecondName(user.getSecondName());
                 userService.userSave(updateUser);
                 response = ResponseEntity.status(HttpStatus.ALREADY_REPORTED).body("User " + user.getEmail() + " successfully updated");
-                logger.info("User successfully updated " + user.getEmail());
             }else {
                 //create new user
                 userService.userSave(user);
                 response =  ResponseEntity.status(HttpStatus.CREATED).body("User " + user.getEmail() + " successfully created");
             }
         }catch(Exception e){
-            logger.error("An ERROR occur while creating user.", e.getMessage());
             response =  ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("User " + user.getEmail() + " failed");
 
         }
@@ -63,27 +65,45 @@ public class UserController {
     //funcation to handle mobile request
     @PostMapping("/user/add/mobileLoc")
     public ResponseEntity<String> addMobiileLocation(@RequestBody String userMobileLocation) throws JsonProcessingException {
-        ResponseEntity<String> responseEntity = null;
-        ObjectMapper objectMapper = new ObjectMapper();
-        MobiileUser mobiileUser = objectMapper.readValue(userMobileLocation, MobiileUser.class);
-        //first check whether given id exist or not
-        logger.info(" => " + userMobileLocation);
-        logger.info(" => " + mobiileUser.getLocation().getLongitude());
+
+        ResponseEntity<String> response = null;
+        try{
 
 
-        UUID userId = UUID.fromString(mobiileUser.getUserId()); // wrapper since we're receiving Json as String
-        boolean userExist = userService.checkUserById(userId);
+            ObjectMapper objectMapper = new ObjectMapper();
+            MobiileUser mobiileUser = objectMapper.readValue(userMobileLocation, MobiileUser.class);
 
-        if(userExist){
-            //user exist so insert records to database
+            //first check whether given id exist or not
+            UUID userId = UUID.fromString(mobiileUser.getUserId()); // wrapper since we're receiving Json as String
+            boolean userExist = userService.checkUserById(userId);
 
+            if(userExist) {
 
+                Optional<User> userLocation = userService.getUserById(userId);
+                User userLoc = userLocation.get();
 
-        }else {
-            logger.info("user {} not found in the database", userId);
+                User existingUser = new User(userLoc.getUserId(),userLoc.getCreatedOn()
+                        ,userLoc.getEmail(), userLoc.getFirstName(), userLoc.getSecondName());
+
+                //user exist so insert records to database
+                Locations locations = new Locations();
+                locations.setLocationCreatedOn(mobiileUser.getCreatedOn());
+                locations.setLatitude(mobiileUser.getLocation().getLatitude());
+                locations.setLongitude(mobiileUser.getLocation().getLongitude());
+                locations.setUser(existingUser);
+                locationService.saveLocation(locations);
+
+                response =  ResponseEntity.status(HttpStatus.CREATED).body("User with id " + mobiileUser.getUserId() + " successfully created");
+
+            }else {
+                response = ResponseEntity.status(HttpStatus.ALREADY_REPORTED).body("User " + userId+ " doesn't exist.");
+            }
+
+        }catch(Exception e){
+            response =  ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("User mobile location insertion failed");
         }
-        return responseEntity;
 
+        return response;
 
     }
 
