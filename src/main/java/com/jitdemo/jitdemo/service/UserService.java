@@ -49,8 +49,8 @@ public class UserService {
     }
 
 
+    //Since we're getting request from mobile, we assume will have always valid UUID
     public String getLatestUserLocationById(UUID uuid) throws UserNotFoundException, JsonProcessingException {
-
         boolean checkUser = this.getUserById(uuid).isPresent();
         if(!checkUser){
             throw new UserNotFoundException("User ID: " + uuid + "does not exist");
@@ -64,18 +64,23 @@ public class UserService {
     private String getString(UUID uuid) throws JsonProcessingException {
         LatestUserLocation latestUserLocation = userRepository.getLatestUserLocationById(uuid.toString());
         JsonLatestUserLocation jsonLatestUserLocation = new JsonLatestUserLocation();
+        if(null != latestUserLocation){
 
-        jsonLatestUserLocation.setUserId(latestUserLocation.getUserId());
-        jsonLatestUserLocation.setCreatedOn(latestUserLocation.getLocationCreatedOn().toString());
-        jsonLatestUserLocation.setEmail(latestUserLocation.getEmail());
-        jsonLatestUserLocation.setFirstName(latestUserLocation.getFirstName());
-        jsonLatestUserLocation.setSecondName(latestUserLocation.getSecondName());
 
-        LatestUserLocationMapping userMobilelocation = new LatestUserLocationMapping(
-                String.valueOf(latestUserLocation.getLatitude()),
-                String.valueOf(latestUserLocation.getLongitude())
-        );
-        jsonLatestUserLocation.setLocation(userMobilelocation);
+            jsonLatestUserLocation.setUserId(latestUserLocation.getUserId());
+            jsonLatestUserLocation.setCreatedOn(latestUserLocation.getLocationCreatedOn().toString());
+            jsonLatestUserLocation.setEmail(latestUserLocation.getEmail());
+            jsonLatestUserLocation.setFirstName(latestUserLocation.getFirstName());
+            jsonLatestUserLocation.setSecondName(latestUserLocation.getSecondName());
+
+            LatestUserLocationMapping userMobilelocation = new LatestUserLocationMapping(
+                    String.valueOf(latestUserLocation.getLatitude()),
+                    String.valueOf(latestUserLocation.getLongitude())
+            );
+            jsonLatestUserLocation.setLocation(userMobilelocation);
+
+        }
+
 
         ObjectMapper mapper = new ObjectMapper();
         //Convert object to JSON string
