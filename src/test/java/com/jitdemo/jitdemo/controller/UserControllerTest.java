@@ -1,5 +1,6 @@
 package com.jitdemo.jitdemo.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jitdemo.jitdemo.model.User;
 import com.jitdemo.jitdemo.repository.UserRepository;
@@ -100,6 +101,21 @@ class UserControllerTest {
 
     }
 
+    @Test
+    public void getLatestUserLocation() throws JsonProcessingException {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+        ResponseEntity<?> responseEntity = userController.getLatestUserLocation(UUID.randomUUID());
+        assertThat(responseEntity.getStatusCode()).isEqualTo(208);
+    }
+
+    @Test
+    public void getUserLocationsFromDates(){
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+        //TODO:XXX
+
+    }
 
 
 }

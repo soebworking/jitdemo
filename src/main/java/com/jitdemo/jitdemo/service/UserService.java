@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -49,13 +50,29 @@ public class UserService {
     }
 
 
-    //Since we're getting request from mobile, we assume will have always valid UUID
+    //Since we're getting request from mobile (logged-in user), we assume will have always valid UUID
     public String getLatestUserLocationById(UUID uuid) throws UserNotFoundException, JsonProcessingException {
 
         String jsonInString = getString(uuid);
 
         return jsonInString;
     }
+
+
+
+    public String getUserLocationsFromDates(UUID uuid, Date fromDate, Date toDate){
+
+
+        return null;
+    }
+
+
+
+
+
+
+
+
 
     private String getString(UUID uuid) throws JsonProcessingException {
         LatestUserLocation latestUserLocation = userRepository.getLatestUserLocationById(uuid.toString());

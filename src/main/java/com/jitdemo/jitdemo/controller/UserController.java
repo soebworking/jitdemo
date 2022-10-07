@@ -16,10 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.regex.Pattern;
 
 @RestController
@@ -112,7 +109,6 @@ public class UserController {
 
 
     //Ger user's details per userId
-
     @GetMapping("/user/getLocation/latest/{userId}")
     @ResponseBody
     public ResponseEntity<String> getLatestUserLocation(@PathVariable("userId") UUID userId) throws JsonProcessingException {
@@ -124,5 +120,15 @@ public class UserController {
         return response;
     }
 
+
+    @GetMapping("/user/getLocation/fromDates/{fromDate}/{toDate}")
+    public ResponseEntity<String> getUserLocationsFromDates(@PathVariable("userId") UUID userId, @PathVariable("fromDate") Date fromDate, @PathVariable("toDate") Date toDate){
+
+        ResponseEntity<String> response = null;
+
+
+        return response;
+
+    }
 
 }
