@@ -1,5 +1,6 @@
 package com.jitdemo.jitdemo.service;
 
+import com.jitdemo.jitdemo.exception.UserNotFoundException;
 import com.jitdemo.jitdemo.model.User;
 import com.jitdemo.jitdemo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,24 +15,29 @@ import java.util.UUID;
 @Transactional
 public class UserService {
 
-    //TODO:XXX exception handling pending
     @Autowired
     private UserRepository userRepository;
 
-    public String checkUserByEmail(String email){
+    public String checkUserByEmail(String email) throws UserNotFoundException {
+        if(userRepository.existsByEmail(email).isEmpty()){
+            throw new UserNotFoundException("User with email " + email + " does not exist");
+        }
         return userRepository.existsByEmail(email) ;
     }
 
+    // not implemented exception as we create a new user and update if existing
     public void userSave(User user){
         userRepository.save(user);
 
     }
 
+    //not implemented exception as we return boolean and calling class logic works based on boolean
     public boolean checkUserById(UUID uuid){
         return userRepository.findById(uuid).isPresent();
     }
 
 
+    //not implemented exception as we return Optional<User> and calling class handle the logic
     public Optional<User> getUserById(UUID uuid){
         return userRepository.findById(uuid);
     }
