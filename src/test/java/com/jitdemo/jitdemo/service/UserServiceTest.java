@@ -114,8 +114,8 @@ public class UserServiceTest {
         Date date1 = sdf.parse("2020-03-30");
         Date date2 = sdf.parse("2020-01-31");
 
-        System.out.println("date1 : " + sdf.format(date1));
-        System.out.println("date2 : " + sdf.format(date2));
+       // System.out.println("date1 : " + sdf.format(date1));
+       // System.out.println("date2 : " + sdf.format(date2));
 
         int result = date1.compareTo(date2);
         System.out.println("result: " + result);
