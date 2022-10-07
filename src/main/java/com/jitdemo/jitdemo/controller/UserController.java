@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -122,11 +123,12 @@ public class UserController {
 
 
     @GetMapping("/user/getLocation/fromDates/{fromDate}/{toDate}")
-    public ResponseEntity<String> getUserLocationsFromDates(@PathVariable("userId") UUID userId, @PathVariable("fromDate") Date fromDate, @PathVariable("toDate") Date toDate){
-
+    @ResponseBody
+    public ResponseEntity<String> getUserLocationsFromDates(@PathVariable("userId") UUID userId, @PathVariable("fromDate") Date fromDate, @PathVariable("toDate") Date toDate) throws ParseException {
+        System.out.println("Inside controller");
         ResponseEntity<String> response = null;
-
-
+        String userLocationsJsonStr = userService.getUserLocationsFromDates(userId, fromDate, toDate);
+        response =  ResponseEntity.status(HttpStatus.OK).body(userLocationsJsonStr);
         return response;
 
     }
