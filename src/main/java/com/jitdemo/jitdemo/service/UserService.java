@@ -51,10 +51,6 @@ public class UserService {
 
     //Since we're getting request from mobile, we assume will have always valid UUID
     public String getLatestUserLocationById(UUID uuid) throws UserNotFoundException, JsonProcessingException {
-        boolean checkUser = this.getUserById(uuid).isPresent();
-        if(!checkUser){
-            throw new UserNotFoundException("User ID: " + uuid + "does not exist");
-        }
 
         String jsonInString = getString(uuid);
 
