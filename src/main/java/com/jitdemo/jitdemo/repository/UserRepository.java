@@ -14,7 +14,7 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     String existsByEmail(String email);
 
-    @Query(nativeQuery = true, value = "Select  u.id as userId, l.location_created_on as locationCreationOn, " +
+    @Query(nativeQuery = true, value = "Select  u.id as userId, l.location_created_on as locationCreatedOn, " +
             "    u.email as email, u.first_name as firstName, u.second_name as secondName, " +
             "    l.latitude as latitude, l.longitude as longitude" +
             "    from user as u inner join locations l " +
