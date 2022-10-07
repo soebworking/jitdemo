@@ -127,7 +127,7 @@ public class UserController {
     public ResponseEntity<String> getUserLocationsFromDates(@PathVariable("userId") UUID userId, @PathVariable("fromDate") Date fromDate, @PathVariable("toDate") Date toDate) throws ParseException {
         System.out.println("Inside controller");
         ResponseEntity<String> response = null;
-        String userLocationsJsonStr = userService.getUserLocationsFromDates(userId, fromDate, toDate);
+        String userLocationsJsonStr = locationService.getUserLocationsFromDates(userId, fromDate, toDate);
         response =  ResponseEntity.status(HttpStatus.OK).body(userLocationsJsonStr);
         return response;
 

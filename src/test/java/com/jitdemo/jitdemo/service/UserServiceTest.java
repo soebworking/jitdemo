@@ -128,7 +128,7 @@ public class UserServiceTest {
             System.out.println("Date1 is before Date2"); // Date1 < Date2
         }
 
-        userService.getUserLocationsFromDates(UUID.randomUUID(), date1, date2);
+       // userService.getUserLocationsFromDates(UUID.randomUUID(), date1, date2);
 
 
     }
