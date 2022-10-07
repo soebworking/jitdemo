@@ -51,7 +51,7 @@ public class LocationServiceTest {
             System.out.println("Date1 is before Date2"); // Date1 < Date2
         }
 
-        locationService.getUserLocationsFromDates(UUID.randomUUID(), date1, date2);
+       // locationService.getUserLocationsFromDates(UUID.randomUUID(), date1, date2);
 
         //System.out.println("== " + responseEntity.getStatusCode());
     }

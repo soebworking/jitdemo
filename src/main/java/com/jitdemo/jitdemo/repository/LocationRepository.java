@@ -8,10 +8,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Repository
 public interface LocationRepository extends JpaRepository<Locations, Integer> {
 
-    @Query(value = "from EntityClassTable t where userId = :uId locationCreatedOn BETWEEN :startDate AND :endDate")
-    public List<Locations> getAllBetweenDates(@Param("uId") String uId, @Param("startDate")Date startDate, @Param("endDate") Date endDate);
+    @Query(value = "from Locations where user.id = :uId AND  (locationCreatedOn BETWEEN :startDate AND :endDate)")
+    public <uid> List<Locations> getAllBetweenDates(@Param("uId") UUID uId , @Param("startDate")Date startDate, @Param("endDate") Date endDate);
 }

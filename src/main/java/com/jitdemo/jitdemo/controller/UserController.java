@@ -122,11 +122,12 @@ public class UserController {
     }
 
 
-    @GetMapping("/user/getLocation/fromDates/{fromDate}/{toDate}")
+    @GetMapping("/user/getLocation/fromDates/{userId}/{fromDate}/{toDate}")
     @ResponseBody
-    public ResponseEntity<String> getUserLocationsFromDates(@PathVariable("userId") UUID userId, @PathVariable("fromDate") Date fromDate, @PathVariable("toDate") Date toDate) throws ParseException {
+    public ResponseEntity<String> getUserLocationsFromDates(@PathVariable("userId") UUID userId, @PathVariable("fromDate") String fromDate, @PathVariable("toDate") String toDate) throws ParseException {
         System.out.println("Inside controller");
         ResponseEntity<String> response = null;
+
         String userLocationsJsonStr = locationService.getUserLocationsFromDates(userId, fromDate, toDate);
         response =  ResponseEntity.status(HttpStatus.OK).body(userLocationsJsonStr);
         return response;

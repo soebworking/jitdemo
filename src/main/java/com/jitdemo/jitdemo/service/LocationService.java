@@ -23,7 +23,7 @@ public class LocationService {
     }
 
 
-    public String getUserLocationsFromDates(UUID uuid, Date fromDate, Date toDate) throws ParseException {
+    public String getUserLocationsFromDates(UUID uuid, String fromDate, String toDate) throws ParseException {
         System.out.println("Inside Service");
 
         //first check with date is lower
@@ -31,23 +31,23 @@ public class LocationService {
         Date toDateSql = null;
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date date1 = sdf.parse(sdf.format(fromDate));
-        Date date2 = sdf.parse(sdf.format(toDate));
+        Date date1 = sdf.parse(fromDate);
+        Date date2 = sdf.parse(toDate);
 
 
         int result = date1.compareTo(date2);
 
         //if fromDate < toDate then no change/swap needed
-        fromDateSql = sdf.parse(sdf.format(fromDate));
-        toDateSql = sdf.parse(sdf.format(toDate));
+        fromDateSql = sdf.parse(fromDate);
+        toDateSql = sdf.parse(toDate);
 
         if (result > 0) {
-            fromDateSql = sdf.parse(sdf.format(toDate));
-            toDateSql = sdf.parse(sdf.format(fromDate));
+            fromDateSql = sdf.parse(toDate);
+            toDateSql = sdf.parse(fromDate);
         }
         System.out.println("From date : " + fromDateSql);
         System.out.println("To date : " + toDateSql);
-        locationRepository.getAllBetweenDates(uuid.toString(), fromDateSql, toDateSql);
+        locationRepository.getAllBetweenDates(uuid, fromDateSql, toDateSql);
         return null;
     }
 }
