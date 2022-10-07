@@ -135,8 +135,8 @@ public class UserController {
         jsonLatestUserLocation.setSecondName(latestUserLocation.getSecondName());
 
         LatestUserLocationMapping userMobilelocation = new LatestUserLocationMapping(
-                jsonLatestUserLocation.getLocation().getLatitude(),
-                jsonLatestUserLocation.getLocation().getLongitude()
+                String.valueOf(latestUserLocation.getLatitude()),
+                String.valueOf(latestUserLocation.getLongitude())
         );
         jsonLatestUserLocation.setLocation(userMobilelocation);
 
@@ -149,5 +149,6 @@ public class UserController {
         return response;
     }
 
+    //Select  u.id as userId, l.location_created_on as locationCreationOn,     u.email as email, u.first_name as firstName, u.second_name as secondName,     l.latitude as latitude, l.longitude as longitude    from user as u inner join locations l     on u.id = l.user_id     Where     u.id = 'ca93be79-7199-4084-ac5f-b4301fcae02c'    And         l.location_id = (     Select l1.location_id     From locations l1     where l1.user_id = l.user_id     order by l1.location_id desc     limit 1 )
 
 }
