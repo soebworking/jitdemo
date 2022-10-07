@@ -60,7 +60,7 @@ public class UserService {
     where l1.user_id = l.user_id
     order by l1.location_id desc
     limit 1 ); */
-    public List<LatestUserLocation> getLatestUserLocationById(UUID uuid) throws UserNotFoundException{
+    public LatestUserLocation getLatestUserLocationById(UUID uuid) throws UserNotFoundException{
         return userRepository.getLatestUserLocationById(uuid.toString());
 
     }

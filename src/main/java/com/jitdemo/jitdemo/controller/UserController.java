@@ -121,8 +121,8 @@ public class UserController {
         //Pattern p = Pattern.compile("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$");
        // boolean resultUUid = p.matcher(userId.toString()).matches();
 
-        List<LatestUserLocation> latestUserLocation = userService.getLatestUserLocationById(userId);
-        System.out.println(" xxx => " + latestUserLocation.toString());
+        LatestUserLocation latestUserLocation = userService.getLatestUserLocationById(userId);
+        System.out.println(" xxx => " + latestUserLocation.getEmail());
 
         response =  ResponseEntity.status(HttpStatus.CREATED).body("User with id successfully created");
         return response;
