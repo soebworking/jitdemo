@@ -3,6 +3,8 @@ package com.jitdemo.jitdemo.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jitdemo.jitdemo.controller.dto.mobileLocation.MobiileUser;
+import com.jitdemo.jitdemo.controller.dto.userLocation.LatestUserLocation;
+import com.jitdemo.jitdemo.exception.ResourceNotFoundException;
 import com.jitdemo.jitdemo.model.Locations;
 import com.jitdemo.jitdemo.model.User;
 import com.jitdemo.jitdemo.service.LocationService;
@@ -10,12 +12,12 @@ import com.jitdemo.jitdemo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 @RestController
 public class UserController {
@@ -105,6 +107,26 @@ public class UserController {
     }
 
 
+
+    //Ger user's details per userId
+
+    @GetMapping("/user/getLocation/latest/{userId}")
+    @ResponseBody
+    public ResponseEntity<String> getLatestUserLocation(@PathVariable("userId") UUID userId){
+
+        ResponseEntity<String> response = null;
+        /*if(userId == 0){
+             throw new ResourceNotFoundException("UserId not found");
+        }*/
+        //Pattern p = Pattern.compile("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$");
+       // boolean resultUUid = p.matcher(userId.toString()).matches();
+
+        List<LatestUserLocation> latestUserLocation = userService.getLatestUserLocationById(userId);
+        System.out.println(" xxx => " + latestUserLocation.toString());
+
+        response =  ResponseEntity.status(HttpStatus.CREATED).body("User with id successfully created");
+        return response;
+    }
 
 
 }
