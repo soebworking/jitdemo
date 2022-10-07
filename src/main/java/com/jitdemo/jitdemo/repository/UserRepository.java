@@ -28,6 +28,6 @@ public interface UserRepository extends JpaRepository<User, UUID> {
             "    where l1.user_id = l.user_id " +
             "    order by l1.location_id desc " +
             "    limit 1 )")
-    List<LatestUserLocation> getLatestUserLocationById(UUID uuid);
+    List<LatestUserLocation> getLatestUserLocationById(String uuid);
 
 }
