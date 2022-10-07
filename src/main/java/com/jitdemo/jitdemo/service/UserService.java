@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
 import javax.transaction.Transactional;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -60,18 +62,42 @@ public class UserService {
 
 
 
-    public String getUserLocationsFromDates(UUID uuid, Date fromDate, Date toDate){
+    public String getUserLocationsFromDates(UUID uuid, Date fromDate, Date toDate) throws ParseException {
+        System.out.println("Inside Service");
+        //first check with date is lower
+        Date fromDateSql = null;
+        Date toDateSql = null;
 
+        extracted(fromDate, toDate);
+
+        System.out.println("fromDateSql " + String.valueOf(fromDateSql));
+        System.out.println("toDateSql " + String.valueOf(toDateSql));
 
         return null;
     }
 
+    private static void extracted(Date fromDate, Date toDate) throws ParseException {
+        Date fromDateSql;
+        Date toDateSql;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date1 = sdf.parse(String.valueOf(fromDate));
+        Date date2 = sdf.parse(String.valueOf(toDate));
 
+        System.out.println("date1 : " + sdf.format(fromDate));
+        System.out.println("date2 : " + sdf.format(toDate));
 
+        int result = date1.compareTo(date2);
+        System.out.println("result: " + result);
 
+        fromDateSql = fromDate;
+        toDateSql = toDate;
 
-
-
+        if (result > 0) {
+            System.out.println("Date1 is after Date2"); //Date1 > Date2
+            fromDateSql = toDate;
+            toDateSql = fromDate;
+        }
+    }
 
 
     private String getString(UUID uuid) throws JsonProcessingException {

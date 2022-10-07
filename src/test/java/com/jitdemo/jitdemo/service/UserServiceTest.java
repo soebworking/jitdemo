@@ -1,5 +1,11 @@
 package com.jitdemo.jitdemo.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jitdemo.jitdemo.controller.dto.userLocation.JsonLatestUserLocation;
+import com.jitdemo.jitdemo.controller.dto.userLocation.LatestUserLocation;
+import com.jitdemo.jitdemo.controller.dto.userLocation.LatestUserLocationMapping;
+import com.jitdemo.jitdemo.exception.UserNotFoundException;
 import com.jitdemo.jitdemo.model.User;
 import com.jitdemo.jitdemo.repository.UserRepository;
 import org.aspectj.lang.annotation.Before;
@@ -11,6 +17,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.ResponseEntity;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -20,7 +27,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -82,5 +89,48 @@ public class UserServiceTest {
     }
 
 
+    @Test
+    public void getLatestUserLocation() throws JsonProcessingException {
+
+        //TODO:Open
+
+        Exception exception = assertThrows(UserNotFoundException.class, () -> {
+            userService.getLatestUserLocationById(uid);
+        });
+
+        String expectedMessage = "User ID: " + uid + "does not exist";
+        String actualMessage = exception.getMessage();
+
+       // assertTrue(actualMessage.contains(expectedMessage));
+
+
+    }
+
+
+    @Test
+    public void getUserLocationsFromDates() throws ParseException {
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date1 = sdf.parse("2020-03-30");
+        Date date2 = sdf.parse("2020-01-31");
+
+        System.out.println("date1 : " + sdf.format(date1));
+        System.out.println("date2 : " + sdf.format(date2));
+
+        int result = date1.compareTo(date2);
+        System.out.println("result: " + result);
+
+        if (result == 0) {
+            System.out.println("Date1 is equal to Date2");
+        } else if (result > 0) {
+            System.out.println("Date1 is after Date2"); //Date1 > Date2
+        } else if (result < 0) {
+            System.out.println("Date1 is before Date2"); // Date1 < Date2
+        }
+
+        userService.getUserLocationsFromDates(UUID.randomUUID(), date1, date2);
+
+
+    }
 
 }
