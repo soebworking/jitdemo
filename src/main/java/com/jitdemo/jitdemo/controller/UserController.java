@@ -3,7 +3,9 @@ package com.jitdemo.jitdemo.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jitdemo.jitdemo.controller.dto.mobileLocation.MobiileUser;
+import com.jitdemo.jitdemo.controller.dto.userLocation.JsonLatestUserLocation;
 import com.jitdemo.jitdemo.controller.dto.userLocation.LatestUserLocation;
+import com.jitdemo.jitdemo.controller.dto.userLocation.LatestUserLocationMapping;
 import com.jitdemo.jitdemo.exception.ResourceNotFoundException;
 import com.jitdemo.jitdemo.model.Locations;
 import com.jitdemo.jitdemo.model.User;
@@ -14,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -112,7 +115,7 @@ public class UserController {
 
     @GetMapping("/user/getLocation/latest/{userId}")
     @ResponseBody
-    public ResponseEntity<String> getLatestUserLocation(@PathVariable("userId") UUID userId){
+    public ResponseEntity<String> getLatestUserLocation(@PathVariable("userId") UUID userId) throws JsonProcessingException {
 
         ResponseEntity<String> response = null;
         /*if(userId == 0){
@@ -123,6 +126,24 @@ public class UserController {
 
         LatestUserLocation latestUserLocation = userService.getLatestUserLocationById(userId);
         System.out.println(" xxx => " + latestUserLocation.getEmail());
+        JsonLatestUserLocation jsonLatestUserLocation = new JsonLatestUserLocation();
+
+        jsonLatestUserLocation.setUserId(latestUserLocation.getUserId());
+        jsonLatestUserLocation.setCreatedOn(latestUserLocation.getLocationCreatedOn().toString());
+        jsonLatestUserLocation.setEmail(latestUserLocation.getEmail());
+        jsonLatestUserLocation.setFirstName(latestUserLocation.getFirstName());
+        jsonLatestUserLocation.setSecondName(latestUserLocation.getSecondName());
+
+        LatestUserLocationMapping userMobilelocation = new LatestUserLocationMapping(
+                jsonLatestUserLocation.getLocation().getLatitude(),
+                jsonLatestUserLocation.getLocation().getLongitude()
+        );
+        jsonLatestUserLocation.setLocation(userMobilelocation);
+
+        ObjectMapper mapper = new ObjectMapper();
+        //Convert object to JSON string
+        String jsonInString = mapper.writeValueAsString(jsonLatestUserLocation);
+        System.out.println(jsonInString);
 
         response =  ResponseEntity.status(HttpStatus.CREATED).body("User with id successfully created");
         return response;
