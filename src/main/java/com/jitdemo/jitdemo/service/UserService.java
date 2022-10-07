@@ -1,6 +1,10 @@
 package com.jitdemo.jitdemo.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jitdemo.jitdemo.controller.dto.userLocation.JsonLatestUserLocation;
 import com.jitdemo.jitdemo.controller.dto.userLocation.LatestUserLocation;
+import com.jitdemo.jitdemo.controller.dto.userLocation.LatestUserLocationMapping;
 import com.jitdemo.jitdemo.exception.UserNotFoundException;
 import com.jitdemo.jitdemo.model.User;
 import com.jitdemo.jitdemo.repository.UserRepository;
@@ -45,23 +49,38 @@ public class UserService {
     }
 
 
-    /*
-    Select  u.id, l.location_created_on,
-    u.email, u.first_name, u.second_name,
-    l.latitude, l.longitude
-    from user as u inner join locations l
-    on u.id = l.user_id
-    Where
-    u.id = 'ca93be79-7199-4084-ac5f-b4301fcae02c'
-    And
-        l.location_id = (
-    Select l1.location_id
-    From locations l1
-    where l1.user_id = l.user_id
-    order by l1.location_id desc
-    limit 1 ); */
-    public LatestUserLocation getLatestUserLocationById(UUID uuid) throws UserNotFoundException{
-        return userRepository.getLatestUserLocationById(uuid.toString());
+    public String getLatestUserLocationById(UUID uuid) throws UserNotFoundException, JsonProcessingException {
 
+        boolean checkUser = this.getUserById(uuid).isPresent();
+        if(!checkUser){
+            throw new UserNotFoundException("User ID: " + uuid + "does not exist");
+        }
+
+        String jsonInString = getString(uuid);
+
+        return jsonInString;
     }
+
+    private String getString(UUID uuid) throws JsonProcessingException {
+        LatestUserLocation latestUserLocation = userRepository.getLatestUserLocationById(uuid.toString());
+        JsonLatestUserLocation jsonLatestUserLocation = new JsonLatestUserLocation();
+
+        jsonLatestUserLocation.setUserId(latestUserLocation.getUserId());
+        jsonLatestUserLocation.setCreatedOn(latestUserLocation.getLocationCreatedOn().toString());
+        jsonLatestUserLocation.setEmail(latestUserLocation.getEmail());
+        jsonLatestUserLocation.setFirstName(latestUserLocation.getFirstName());
+        jsonLatestUserLocation.setSecondName(latestUserLocation.getSecondName());
+
+        LatestUserLocationMapping userMobilelocation = new LatestUserLocationMapping(
+                String.valueOf(latestUserLocation.getLatitude()),
+                String.valueOf(latestUserLocation.getLongitude())
+        );
+        jsonLatestUserLocation.setLocation(userMobilelocation);
+
+        ObjectMapper mapper = new ObjectMapper();
+        //Convert object to JSON string
+        String jsonInString = mapper.writeValueAsString(jsonLatestUserLocation);
+        return jsonInString;
+    }
+
 }

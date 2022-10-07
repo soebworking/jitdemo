@@ -118,37 +118,11 @@ public class UserController {
     public ResponseEntity<String> getLatestUserLocation(@PathVariable("userId") UUID userId) throws JsonProcessingException {
 
         ResponseEntity<String> response = null;
-        /*if(userId == 0){
-             throw new ResourceNotFoundException("UserId not found");
-        }*/
-        //Pattern p = Pattern.compile("[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$");
-       // boolean resultUUid = p.matcher(userId.toString()).matches();
+        String userLatestLocationJsonStr = userService.getLatestUserLocationById(userId);
+        response =  ResponseEntity.status(HttpStatus.OK).body(userLatestLocationJsonStr);
 
-        LatestUserLocation latestUserLocation = userService.getLatestUserLocationById(userId);
-        System.out.println(" xxx => " + latestUserLocation.getEmail());
-        JsonLatestUserLocation jsonLatestUserLocation = new JsonLatestUserLocation();
-
-        jsonLatestUserLocation.setUserId(latestUserLocation.getUserId());
-        jsonLatestUserLocation.setCreatedOn(latestUserLocation.getLocationCreatedOn().toString());
-        jsonLatestUserLocation.setEmail(latestUserLocation.getEmail());
-        jsonLatestUserLocation.setFirstName(latestUserLocation.getFirstName());
-        jsonLatestUserLocation.setSecondName(latestUserLocation.getSecondName());
-
-        LatestUserLocationMapping userMobilelocation = new LatestUserLocationMapping(
-                String.valueOf(latestUserLocation.getLatitude()),
-                String.valueOf(latestUserLocation.getLongitude())
-        );
-        jsonLatestUserLocation.setLocation(userMobilelocation);
-
-        ObjectMapper mapper = new ObjectMapper();
-        //Convert object to JSON string
-        String jsonInString = mapper.writeValueAsString(jsonLatestUserLocation);
-        System.out.println(jsonInString);
-
-        response =  ResponseEntity.status(HttpStatus.CREATED).body("User with id successfully created");
         return response;
     }
 
-    //Select  u.id as userId, l.location_created_on as locationCreationOn,     u.email as email, u.first_name as firstName, u.second_name as secondName,     l.latitude as latitude, l.longitude as longitude    from user as u inner join locations l     on u.id = l.user_id     Where     u.id = 'ca93be79-7199-4084-ac5f-b4301fcae02c'    And         l.location_id = (     Select l1.location_id     From locations l1     where l1.user_id = l.user_id     order by l1.location_id desc     limit 1 )
 
 }
