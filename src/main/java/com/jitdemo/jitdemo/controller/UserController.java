@@ -115,8 +115,14 @@ public class UserController {
     public ResponseEntity<String> getLatestUserLocation(@PathVariable("userId") UUID userId) throws JsonProcessingException {
 
         ResponseEntity<String> response = null;
-        String userLatestLocationJsonStr = userService.getLatestUserLocationById(userId);
-        response =  ResponseEntity.status(HttpStatus.OK).body(userLatestLocationJsonStr);
+        String userLatestLocationJsonStr = null;
+
+        try{
+            userLatestLocationJsonStr = userService.getLatestUserLocationById(userId);
+            response =  ResponseEntity.status(HttpStatus.OK).body(userLatestLocationJsonStr);
+        }catch(Exception e){
+            response =  ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("User latest mobile location failed");
+        }
 
         return response;
     }
@@ -125,11 +131,15 @@ public class UserController {
     @GetMapping("/user/getLocation/fromDates/{userId}/{fromDate}/{toDate}")
     @ResponseBody
     public ResponseEntity<String> getUserLocationsFromDates(@PathVariable("userId") UUID userId, @PathVariable("fromDate") String fromDate, @PathVariable("toDate") String toDate) throws ParseException, JsonProcessingException {
-        System.out.println("Inside controller");
         ResponseEntity<String> response = null;
+        String userLocationsJsonStr = null;
+        try{
+            userLocationsJsonStr = locationService.getUserLocationsFromDates(userId, fromDate, toDate);
+            response =  ResponseEntity.status(HttpStatus.OK).body(userLocationsJsonStr);
+        }catch(Exception e){
+            response =  ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("User mobile location failed");
+        }
 
-        String userLocationsJsonStr = locationService.getUserLocationsFromDates(userId, fromDate, toDate);
-        response =  ResponseEntity.status(HttpStatus.OK).body(userLocationsJsonStr);
         return response;
 
     }
