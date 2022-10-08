@@ -49,15 +49,10 @@ public class LocationService {
 
         List<Locations> locationResults =  locationRepository.getAllBetweenDates(uuid, fromDateSql, toDateSql);
 
-
         List<Location> userLocation = new ArrayList<Location>(); // latitude, longitude
-
-
         List<com.jitdemo.jitdemo.controller.dto.userLocationsByDates.Locations> locationsCreatedOn = new ArrayList<com.jitdemo.jitdemo.controller.dto.userLocationsByDates.Locations>(); // created on
 
-        //UserLocationsByDates userLocationsByDates = null;
 
-        int i =0;
         for (Locations tempLocationResults : locationResults) {
             Location ulLocation  = new Location(tempLocationResults.getLatitude(),tempLocationResults.getLongitude() );
             userLocation.add(ulLocation);
@@ -69,7 +64,6 @@ public class LocationService {
 
             locationsCreatedOn.add(ulLocations);
 
-
             UserLocationsByDates ulUserLocationsByDates =  new UserLocationsByDates(
                     tempLocationResults.getUser().getUserId().toString(),
                     locationsCreatedOn
@@ -77,51 +71,13 @@ public class LocationService {
             );
 
 
-
-            System.out.println(
-                    tempLocationResults.getUser().getUserId() + ", " +
-                            tempLocationResults.getLocationCreatedOn() + ", " +
-                            tempLocationResults.getLatitude() + ", " +
-                            tempLocationResults.getLongitude()
-            );
-
-
-
             ObjectMapper mapper = new ObjectMapper();
             //Convert object to JSON string
             String jsonInString = mapper.writeValueAsString(ulUserLocationsByDates);
             System.out.println(" ==> " + jsonInString);
 
-        i++;
         }
 
-
-
-
-        /*
-         System.out.println(
-                        locations.getUser().getUserId() + ", " +
-                        locations.getLocationCreatedOn() + ", " +
-                                locations.getLatitude() + ", " +
-                                locations.getLongitude()
-                )
-
-
-
-        locationResults.forEach(
-                (locations) -> {
-
-                    userLocation.setLatitude(locations.getLatitude());
-                    userLocation.setLongitude(locations.getLongitude());
-
-                    locationsCreatedOn.setCreatedOn(locations.getLocationCreatedOn());
-                    locationsCreatedOn.setLocation(userLocation);
-                    //userLocationsByDates.setUserId(locations.getUser().getUserId().toString());
-                   // userLocationsByDates.setLocations(userLocation);
-
-
-
-                });*/
         return null;
     }
 }
