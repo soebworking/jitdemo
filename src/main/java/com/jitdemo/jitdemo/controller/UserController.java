@@ -124,7 +124,7 @@ public class UserController {
 
     @GetMapping("/user/getLocation/fromDates/{userId}/{fromDate}/{toDate}")
     @ResponseBody
-    public ResponseEntity<String> getUserLocationsFromDates(@PathVariable("userId") UUID userId, @PathVariable("fromDate") String fromDate, @PathVariable("toDate") String toDate) throws ParseException {
+    public ResponseEntity<String> getUserLocationsFromDates(@PathVariable("userId") UUID userId, @PathVariable("fromDate") String fromDate, @PathVariable("toDate") String toDate) throws ParseException, JsonProcessingException {
         System.out.println("Inside controller");
         ResponseEntity<String> response = null;
 
