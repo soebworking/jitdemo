@@ -11,6 +11,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class LatestUserLocationMapping {
 
-    private String latitude;
-    private String longitude;
+    private double latitude;
+    private double longitude;
 }

@@ -78,8 +78,8 @@ public class UserService {
             jsonLatestUserLocation.setSecondName(latestUserLocation.getSecondName());
 
             LatestUserLocationMapping userMobilelocation = new LatestUserLocationMapping(
-                    String.valueOf(latestUserLocation.getLatitude()),
-                    String.valueOf(latestUserLocation.getLongitude())
+                    latestUserLocation.getLatitude(),
+                    latestUserLocation.getLongitude()
             );
             jsonLatestUserLocation.setLocation(userMobilelocation);
 
