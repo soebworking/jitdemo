@@ -3,10 +3,6 @@ package com.jitdemo.jitdemo.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jitdemo.jitdemo.controller.dto.mobileLocation.MobiileUser;
-import com.jitdemo.jitdemo.controller.dto.userLocation.JsonLatestUserLocation;
-import com.jitdemo.jitdemo.controller.dto.userLocation.LatestUserLocation;
-import com.jitdemo.jitdemo.controller.dto.userLocation.LatestUserLocationMapping;
-import com.jitdemo.jitdemo.exception.ResourceNotFoundException;
 import com.jitdemo.jitdemo.model.Locations;
 import com.jitdemo.jitdemo.model.User;
 import com.jitdemo.jitdemo.service.LocationService;
@@ -17,8 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
-import java.util.*;
-import java.util.regex.Pattern;
+import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 public class UserController {
@@ -93,7 +89,7 @@ public class UserController {
                 locations.setUser(existingUser);
                 locationService.saveLocation(locations);
 
-                response =  ResponseEntity.status(HttpStatus.CREATED).body("User with id " + mobiileUser.getUserId() + " successfully created");
+                response =  ResponseEntity.status(HttpStatus.CREATED).body("Location for User id " + mobiileUser.getUserId() + " successfully created");
 
             }else {
                 response = ResponseEntity.status(HttpStatus.ALREADY_REPORTED).body("User " + userId+ " doesn't exist.");

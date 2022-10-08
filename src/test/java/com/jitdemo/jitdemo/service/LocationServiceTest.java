@@ -1,5 +1,8 @@
 package com.jitdemo.jitdemo.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.jitdemo.jitdemo.model.Locations;
+import com.jitdemo.jitdemo.model.User;
 import com.jitdemo.jitdemo.repository.LocationRepository;
 import com.jitdemo.jitdemo.repository.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -12,10 +15,17 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.internal.bytebuddy.implementation.FixedValue.nullValue;
+import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class LocationServiceTest {
@@ -28,31 +38,27 @@ public class LocationServiceTest {
     private LocationService locationService;
 
     @Test
-    public void getUserLocationsFromDates() throws ParseException {
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
-        //TODO:XXX
+    public void getUserLocationsFromDates() throws ParseException, JsonProcessingException {
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date date1 = sdf.parse("2020-03-30");
-        Date date2 = sdf.parse("2020-01-31");
+        String dDate="2022-02-08T11:44:00.524";
+        DateFormat df = new SimpleDateFormat("yyy-MM-dd'T'HH:mm:ss.S");
+        Date creationDate = df.parse(dDate);
 
-        System.out.println("date1 : " + sdf.format(date1));
-        System.out.println("date2 : " + sdf.format(date2));
+        String fromDate = "2020-03-30T11:44:00.524";
+        String toDate = "2020-09-31T11:44:00.524";
 
-        int result = date1.compareTo(date2);
-        System.out.println("result: " + result);
+        Date fDate = df.parse(fromDate);
+        Date tDate = df.parse(toDate);
 
-        if (result == 0) {
-            System.out.println("Date1 is equal to Date2");
-        } else if (result > 0) {
-            System.out.println("Date1 is after Date2"); //Date1 > Date2
-        } else if (result < 0) {
-            System.out.println("Date1 is before Date2"); // Date1 < Date2
-        }
+        User userToAdd = new User(null, creationDate, "junit@test.com",
+                "junitFirstName", "junitSecondName" );
 
-       // locationService.getUserLocationsFromDates(UUID.randomUUID(), date1, date2);
+        Locations locations = new Locations(1, creationDate, 27.540583401747602 , 26.540583401747602, userToAdd );
+        List<Locations> locationsList = new ArrayList<Locations>();
+        locationsList.add(locations);
 
-        //System.out.println("== " + responseEntity.getStatusCode());
+        String str;
+        str = locationService.getUserLocationsFromDates(UUID.randomUUID(), fromDate, toDate);
+        assertThat(str).isEqualTo(null);
     }
 }
