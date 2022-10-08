@@ -13,6 +13,7 @@ import java.util.UUID;
 @Repository
 public interface LocationRepository extends JpaRepository<Locations, Integer> {
 
+
     @Query(value = "from Locations where user.id = :uId AND  (locationCreatedOn BETWEEN :startDate AND :endDate)")
-    public <uid> List<Locations> getAllBetweenDates(@Param("uId") UUID uId , @Param("startDate")Date startDate, @Param("endDate") Date endDate);
+    List<Locations> getAllBetweenDates(@Param("uId") UUID uId , @Param("startDate")Date startDate, @Param("endDate") Date endDate);
 }
