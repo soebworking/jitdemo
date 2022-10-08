@@ -43,6 +43,15 @@ public class LocationService {
         }
 
         List<Locations> locationResults =  locationRepository.getAllBetweenDates(uuid, fromDateSql, toDateSql);
+        locationResults.forEach(
+
+                locations -> System.out.println(
+                        locations.getUser().getUserId() + ", " +
+                        locations.getLocationCreatedOn() + ", " +
+                                locations.getLatitude() + ", " +
+                                locations.getLongitude()
+                )
+        );
         return null;
     }
 }
