@@ -12,6 +12,6 @@ import java.util.Date;
 @Getter
 @Setter
 public class Locations {
-    private Date createdOn;
+    private String createdOn;
     private Location location;
 }

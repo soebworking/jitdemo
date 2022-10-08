@@ -31,6 +31,7 @@ public class LocationService {
 
     public String getUserLocationsFromDates(UUID uuid, String fromDate, String toDate) throws ParseException, JsonProcessingException {
 
+        String jsonInString = null;
         //first check with date is lower
         Date fromDateSql = null;
         Date toDateSql = null;
@@ -38,7 +39,6 @@ public class LocationService {
         Date date1 = sdf.parse(fromDate);
         Date date2 = sdf.parse(toDate);
         int result = date1.compareTo(date2);
-        //if fromDate < toDate then change/swap needed
         fromDateSql = sdf.parse(fromDate);
         toDateSql = sdf.parse(toDate);
 
@@ -58,7 +58,7 @@ public class LocationService {
             userLocation.add(ulLocation);
 
             com.jitdemo.jitdemo.controller.dto.userLocationsByDates.Locations ulLocations = new com.jitdemo.jitdemo.controller.dto.userLocationsByDates.Locations(
-                    tempLocationResults.getLocationCreatedOn(),
+                    tempLocationResults.getLocationCreatedOn().toString(), //in the json response date comes as int, so changed to String
                     ulLocation
             );
 
@@ -73,11 +73,10 @@ public class LocationService {
 
             ObjectMapper mapper = new ObjectMapper();
             //Convert object to JSON string
-            String jsonInString = mapper.writeValueAsString(ulUserLocationsByDates);
-            System.out.println(" ==> " + jsonInString);
+            jsonInString = mapper.writeValueAsString(ulUserLocationsByDates);
 
         }
 
-        return null;
+        return jsonInString;
     }
 }
