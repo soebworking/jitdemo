@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -13,6 +15,6 @@ import lombok.Setter;
 public class UserLocationsByDates {
 
     private String userId;
-
+    private List<Locations> locations;
 
 }
