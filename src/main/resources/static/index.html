@@ -27,21 +27,52 @@
 
 
 <div class="container">
-    <h2>Vertical (basic) form</h2>
-    <form action="">
+    <h2>User Registration form</h2>
+
+    <div id="response">
+        <pre></pre>
+    </div>
+
+    <form action="" id="my-form">
         <div class="form-group">
             <label for="email">Email:</label>
             <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
         </div>
         <div class="form-group">
-            <label for="pwd">Password:</label>
-            <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pwd">
+            <label for="firstName">First Name:</label>
+            <input type="text" class="form-control" id="firstName" placeholder="Enter First Name" name="firstName">
         </div>
-        <div class="checkbox">
-            <label><input type="checkbox" name="remember"> Remember me</label>
+        <div class="form-group">
+            <label for="secondName">Second Name:</label>
+            <input type="text" class="form-control" id="secondName" placeholder="Enter Second Name" name="secondName">
         </div>
-        <button type="button" class="btn btn-default">Submit</button>
+        <button type="submit" class="btn btn-default">Submit</button>
     </form>
 </div>
+
+<script>
+    (function($){
+        function processForm( e ){
+            $.ajax({
+                url: 'http://localhost:8080/user/add',
+                dataType: 'text',
+                type: 'post',
+                contentType: 'application/json',
+                data: JSON.stringify( { "createdOn": "2022-02-08T11:44:00.524","email": $('#email').val(), "firstName": $('#firstName').val() , "secondName": $('#secondName').val()} ),
+                success: function( data, textStatus, jQxhr ){
+                   $('#response pre').html( data );
+                },
+                error: function( jqXhr, textStatus, errorThrown ){
+                   // alert("Error!" + jqXhr.status);
+                    console.log( errorThrown );
+                }
+            });
+
+            e.preventDefault();
+        }
+
+        $('#my-form').submit( processForm );
+    })(jQuery);
+</script>
 </body>
 </html>
