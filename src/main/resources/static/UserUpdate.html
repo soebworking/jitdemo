@@ -16,8 +16,8 @@
             <a class="navbar-brand" href="./">WebSiteName</a>
         </div>
         <ul class="nav navbar-nav">
-            <li class="active"><a href="./index.html">Create User</a></li>
-            <li><a href="./UserUpdate.html">Update User</a></li>
+            <li><a href="./index.html">Create User</a></li>
+            <li class="active"><a href="./UserUpdate.html">Update User</a></li>
             <li><a href="./UserLatestLocation.html">Get User's Latest Location</a></li>
             <li><a href="./UserLocationsByDate.html">User's Locations Date Range</a></li>
             <li><a href="./MobileLocationInsert.html">User's Mobile Locations Add</a></li>
@@ -27,21 +27,123 @@
 
 
 <div class="container">
-    <h2>Vertical (basic) form</h2>
-    <form action="">
+    <h2>User update form</h2>
+    <div id="response">
+        <pre></pre>
+    </div>
+
+    <form action="" id="my-form-userId">
+        <div class="form-group">
+            <label for="userId">User Id:</label>
+            <input type="text" class="form-control" id="userId" placeholder="User Id" name="userId">
+        </div>
+        <button type="submit" class="btn btn-default">Get User detail</button>
+    </form>
+
+    <br><br>
+    <form action="" id="my-form">
+        <div class="form-group">
+            <label for="createdOn">User Created On:</label>
+            <input type="text" class="form-control" id="createdOn" placeholder="User Created On" name="createdOn">
+        </div>
         <div class="form-group">
             <label for="email">Email:</label>
             <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
         </div>
         <div class="form-group">
-            <label for="pwd">Password:</label>
-            <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pwd">
+            <label for="firstName">First Name:</label>
+            <input type="text" class="form-control" id="firstName" placeholder="Enter First Name" name="firstName">
         </div>
-        <div class="checkbox">
-            <label><input type="checkbox" name="remember"> Remember me</label>
+        <div class="form-group">
+            <label for="secondName">Second Name:</label>
+            <input type="text" class="form-control" id="secondName" placeholder="Enter Second Name" name="secondName">
         </div>
-        <button type="button" class="btn btn-default">Submit</button>
+        <input type="hidden" id="hiddenUserId" name="hiddenUserId">
+        <button type="submit" class="btn btn-default">Update</button>
     </form>
 </div>
+
+
+
+
+<script>
+
+<!-- Get User details -->
+    (function($){
+        function processForm( e ){
+            $.ajax({
+                url: 'http://localhost:8080/user/getLocation/latest/'+$('#userId').val(),
+                dataType: 'text',
+                type: 'get',
+                contentType: 'application/json',
+                data: '',
+                success: function( data, textStatus, jQxhr ){
+                   $('#response pre').html( data );
+                   //converting it to object, since further rows expect this
+                data = $.parseJSON(data);
+                $('#hiddenUserId').val(data.userId);
+                $('#createdOn').val(data.createdOn);
+                $('#email').val(data.email);
+                $('#firstName').val(data.firstName);
+                $('#secondName').val(data.secondName);
+                //alert(data.createdOn);
+                },
+                error: function( jqXhr, textStatus, errorThrown ){
+                   // alert("Error!" + jqXhr.status);
+                  //  alert("An error occured: " + jqXhr.status + " " + jqXhr.statusText + " " + errorThrown);
+                   $('#response pre').html("Request failed with status code " + jqXhr.status );
+                    console.log( errorThrown );
+                }
+            });
+
+            e.preventDefault();
+        }
+
+        $('#my-form-userId').submit( processForm );
+    })(jQuery);
+
+
+
+
+    function dateFormatISO(userDate){
+     let today = new Date(userDate);
+    data = today.toISOString("yyy-MM-dd'T'HH:mm:ss.S");
+    //alert(data.slice(0, 23));
+    return data.slice(0, 23);
+    }
+
+function chkUserId(userId){
+    alert(" " + userId); return false;
+}
+
+    (function($){
+        function processForm( e ){
+            $.ajax({
+                url: 'http://localhost:8080/user/add',
+                dataType: 'text',
+                type: 'post',
+                contentType: 'application/json',
+                data: JSON.stringify( { "userId": chkUserId($('#hiddenUserId').val()) ,"createdOn": dateFormatISO($('#createdOn').val()),"email": $('#email').val(), "firstName": $('#firstName').val() , "secondName": $('#secondName').val()} ),
+                success: function( data, textStatus, jQxhr ){
+                   $('#response pre').html( data );
+                },
+                error: function( jqXhr, textStatus, errorThrown ){
+                   // alert("Error!" + jqXhr.status);
+                  //  alert("An error occured: " + jqXhr.status + " " + jqXhr.statusText + " " + errorThrown);
+                   $('#response pre').html("Request failed with status code " + jqXhr.status );
+                    console.log( errorThrown );
+                }
+            });
+
+            e.preventDefault();
+        }
+
+        $('#my-form').submit( processForm );
+    })(jQuery);
+
+
+
+
+</script>
 </body>
 </html>
