@@ -59,6 +59,24 @@ public class UserController {
     }
 
 
+    @GetMapping("/${spring.api.user.get}/{userId}")
+    public ResponseEntity<String> getUserDetailsById(@PathVariable("userId") UUID userId){
+        ResponseEntity<String> response = null;
+        try{
+            Optional<User> optionalUser =   userService.getUserById(userId);
+            User user = optionalUser.get();
+
+            ObjectMapper mapper = new ObjectMapper();
+            //Convert object to JSON string
+            String jsonInString = mapper.writeValueAsString(user);
+
+            response =  ResponseEntity.status(HttpStatus.CREATED).body(jsonInString);
+        }catch(Exception e){
+            response = ResponseEntity.status(HttpStatus.ALREADY_REPORTED).body("User " + userId+ " doesn't exist.");
+        }
+
+        return response;
+    }
 
     //funcation to handle mobile request
     @PostMapping("${spring.api.user.add}/${spring.api.user.mobile.location.add}")

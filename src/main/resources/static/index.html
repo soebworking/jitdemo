@@ -51,6 +51,12 @@
 </div>
 
 <script>
+
+function getFormattedDate(){
+    return new Date().toISOString("yyy-MM-dd'T'HH:mm:ss.S").slice(0, 23);
+
+}
+
     (function($){
         function processForm( e ){
             $.ajax({
@@ -58,7 +64,7 @@
                 dataType: 'text',
                 type: 'post',
                 contentType: 'application/json',
-                data: JSON.stringify( { "createdOn": "2022-02-08T11:44:00.524","email": $('#email').val(), "firstName": $('#firstName').val() , "secondName": $('#secondName').val()} ),
+                data: JSON.stringify( { "createdOn": getFormattedDate(),"email": $('#email').val(), "firstName": $('#firstName').val() , "secondName": $('#secondName').val()} ),
                 success: function( data, textStatus, jQxhr ){
                    $('#response pre').html( data );
                 },
