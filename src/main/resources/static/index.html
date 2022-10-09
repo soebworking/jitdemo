@@ -64,6 +64,8 @@
                 },
                 error: function( jqXhr, textStatus, errorThrown ){
                    // alert("Error!" + jqXhr.status);
+                  //  alert("An error occured: " + jqXhr.status + " " + jqXhr.statusText + " " + errorThrown);
+                   $('#response pre').html("Request failed with status code " + jqXhr.status );
                     console.log( errorThrown );
                 }
             });
