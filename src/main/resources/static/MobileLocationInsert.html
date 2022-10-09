@@ -62,7 +62,7 @@
                 dataType: 'text',
                 type: 'post',
                 contentType: 'application/json',
-                data: JSON.parse($('#userMobileLocation').val()),
+                data: $('#userMobileLocation').val(),
                 success: function( data, textStatus, jQxhr ){
                    $('#response pre').html( "User's mobile location successfully update" );
                 },
