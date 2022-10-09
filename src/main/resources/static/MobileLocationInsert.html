@@ -16,32 +16,69 @@
             <a class="navbar-brand" href="./">WebSiteName</a>
         </div>
         <ul class="nav navbar-nav">
-            <li class="active"><a href="./index.html">Create User</a></li>
+            <li><a href="./index.html">Create User</a></li>
             <li><a href="./UserUpdate.html">Update User</a></li>
             <li><a href="./UserLatestLocation.html">Get User's Latest Location</a></li>
             <li><a href="./UserLocationsByDate.html">User's Locations Date Range</a></li>
-            <li><a href="./MobileLocationInsert.html">User's Mobile Locations Add</a></li>
+            <li class="active"><a href="./MobileLocationInsert.html">User's Mobile Locations Add</a></li>
         </ul>
     </div>
 </nav>
 
 
 <div class="container">
-    <h2>Vertical (basic) form</h2>
-    <form action="">
+    <h2>Add user mobile location in json format</h2>
+    <div id="response">
+        <pre></pre>
+    </div>
+    <div id="jsonSample">
+        <pre>
+
+            {
+                "userId": "2e3b11b0-07a4-4873-8de5-d2ae2eab26b2",
+                "createdOn": "2022-02-08T11:44:00.524",
+                "location": {
+                    "latitude": 52.25742342295784,
+                    "longitude": 10.540583401747602
+                }
+            }
+        </pre>
+    </div>
+    <form action="" id="my-form">
         <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
+            <label for="userMobileLocation">Enter json:</label>
+            <textarea class="form-control" id="userMobileLocation" rows="12"></textarea>
         </div>
-        <div class="form-group">
-            <label for="pwd">Password:</label>
-            <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pwd">
-        </div>
-        <div class="checkbox">
-            <label><input type="checkbox" name="remember"> Remember me</label>
-        </div>
-        <button type="button" class="btn btn-default">Submit</button>
+        <button type="submit" class="btn btn-default">Submit</button>
     </form>
 </div>
+
+
+<script>
+    (function($){
+        function processForm( e ){
+            $.ajax({
+                url: 'http://localhost:8080/user/add/mobileLoc',
+                dataType: 'text',
+                type: 'post',
+                contentType: 'application/json',
+                data: JSON.parse($('#userMobileLocation').val()),
+                success: function( data, textStatus, jQxhr ){
+                   $('#response pre').html( "User's mobile location successfully update" );
+                },
+                error: function( jqXhr, textStatus, errorThrown ){
+                   // alert("Error!" + jqXhr.status);
+                  //  alert("An error occured: " + jqXhr.status + " " + jqXhr.statusText + " " + errorThrown);
+                   $('#response pre').html("Request failed with status code " + jqXhr.status );
+                    console.log( errorThrown );
+                }
+            });
+
+            e.preventDefault();
+        }
+
+        $('#my-form').submit( processForm );
+    })(jQuery);
+</script>
 </body>
 </html>
