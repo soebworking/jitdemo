@@ -12,7 +12,7 @@ import java.util.Date;
 
 public interface LatestUserLocation {
     String getUserId();
-    Date getLocationCreatedOn();
+    String getLocationCreatedOn();
     String getEmail();
     String getFirstName();
     String getSecondName();

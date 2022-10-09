@@ -63,8 +63,8 @@ function getFormattedDate(varDate){
         function processForm( e ){
             $.ajax({
                 url: 'http://localhost:8080/v1/user/mobileLoction/fromDates/'
-                + $('#userId').val()+ "/" + getFormattedDate($('#fromDate').val()) +
-                "/" + getFormattedDate($('#toDate').val()),
+                + $('#userId').val()+ "/" + $('#fromDate').val() +
+                "/" + $('#toDate').val(),
                 dataType: 'text',
                 type: 'get',
                 contentType: 'application/json',

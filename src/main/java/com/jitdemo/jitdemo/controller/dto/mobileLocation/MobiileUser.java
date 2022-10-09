@@ -13,6 +13,6 @@ import java.util.Date;
 @NoArgsConstructor
 public class MobiileUser {
     private String userId;
-    private Date createdOn;
+    private String createdOn;
     private Location location;
 }

@@ -28,8 +28,8 @@ public class User {
     @Type(type = "uuid-char")
     private UUID userId;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyy-MM-dd'T'HH:mm:ss.S")
-    private Date createdOn;
+    //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyy-MM-dd'T'HH:mm:ss.S")
+    private String createdOn;
 
     @Column(unique = true)
     private String email;

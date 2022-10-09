@@ -16,18 +16,12 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     @Query(nativeQuery = true, value = "Select  u.id as userId, l.location_created_on as locationCreatedOn, " +
             "    u.email as email, u.first_name as firstName, u.second_name as secondName, " +
-            "    l.latitude as latitude, l.longitude as longitude" +
+            "    l.latitude as latitude, l.longitude as longitude " +
             "    from user as u inner join locations l " +
             "    on u.id = l.user_id " +
             "    Where " +
-            "    u.id = ?1" +
-            "    And " +
-            "        l.location_id = ( " +
-            "    Select l1.location_id " +
-            "    From locations l1 " +
-            "    where l1.user_id = l.user_id " +
-            "    order by l1.location_id desc " +
-            "    limit 1 )")
+            "    u.id = ?1 " +
+            "    And l.location_id = (select location_id from locations order by STR_TO_DATE(location_created_on,'%Y-%m-%dT%H:%i:%s') desc limit 1 )")
     LatestUserLocation getLatestUserLocationById(String uuid);
 
 }

@@ -72,7 +72,7 @@ public class UserService {
 
 
             jsonLatestUserLocation.setUserId(latestUserLocation.getUserId());
-            jsonLatestUserLocation.setCreatedOn(latestUserLocation.getLocationCreatedOn().toString());
+            jsonLatestUserLocation.setCreatedOn(latestUserLocation.getLocationCreatedOn());
             jsonLatestUserLocation.setEmail(latestUserLocation.getEmail());
             jsonLatestUserLocation.setFirstName(latestUserLocation.getFirstName());
             jsonLatestUserLocation.setSecondName(latestUserLocation.getSecondName());

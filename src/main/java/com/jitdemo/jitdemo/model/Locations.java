@@ -23,8 +23,8 @@ public class Locations {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int locationId;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyy-MM-dd'T'HH:mm:ss.S")
-    private Date locationCreatedOn;
+    //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyy-MM-dd'T'HH:mm:ss.S")
+    private String locationCreatedOn;
     private double latitude;
     private double longitude;
 
