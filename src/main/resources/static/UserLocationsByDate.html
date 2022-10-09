@@ -27,35 +27,67 @@
 
 
 <div class="container">
-    <h2>Add user mobile location in json format</h2>
+    <h2>User locations from the date range!</h2>
     <div id="response">
         <pre></pre>
     </div>
-    <form action="">
+    <form action="" id="my-form-userId">
         <div class="form-group">
-            <label for="email">Email:</label>
-            <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
+            <label for="userId">User Id:</label>
+            <input type="text" class="form-control" id="userId" placeholder="User Id" name="userId">
         </div>
         <div class="form-group">
-            <label for="pwd">Password:</label>
-            <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="pwd">
+            <label for="fromDate">From Date:</label>
+            <input type="text" class="form-control" id="fromDate" placeholder="yyyy-mm-dd" name="fromDate">
         </div>
-        <div class="checkbox">
-            <label><input type="checkbox" name="remember"> Remember me</label>
+        <div class="form-group">
+            <label for="toDate">To Date:</label>
+            <input type="text" class="form-control" id="toDate" placeholder="yyyy-mm-dd" name="toDate">
         </div>
-        <button type="button" class="btn btn-default">Submit</button>
+        <button type="submit" class="btn btn-default">Submit</button>
     </form>
 </div>
 </body>
 </html>
 <script>
-    let today = new Date("2020-11-08 17:19:01.0");
- data = today.toISOString("yyy-MM-dd'T'HH:mm:ss.S");
- //alert(data.slice(0, 23));
 
- var uuidData = Uuid.fromString('963126c2-ce15-46df-bbba-381b9db37e29');
-//var uuidString = uuidData.toString();
- alert(uuidData);
+function getFormattedDate(varDate){
+    return new Date(varDate).toISOString("yyy-MM-dd'T'HH:mm:ss.S").slice(0, 23);
+
+}
+
+
+
+<!-- Get User details -->
+    (function($){
+        function processForm( e ){
+            $.ajax({
+                url: 'http://localhost:8080/v1/user/mobileLoction/fromDates/'
+                + $('#userId').val()+ "/" + getFormattedDate($('#fromDate').val()) +
+                "/" + getFormattedDate($('#toDate').val()),
+                dataType: 'text',
+                type: 'get',
+                contentType: 'application/json',
+                data: '',
+                success: function( data, textStatus, jQxhr ){
+                   $('#response pre').html( data );
+                    //alert(data);
+                },
+                error: function( jqXhr, textStatus, errorThrown ){
+                  // alert("Error!" + jqXhr.status);
+                   //alert("An error occured: " + jqXhr.status + " " + jqXhr.statusText + " " + errorThrown);
+                   $('#response pre').html("Request failed with status code " + jqXhr.status );
+                    console.log( errorThrown );
+                }
+            });
+
+            e.preventDefault();
+        }
+
+        $('#my-form-userId').submit( processForm );
+    })(jQuery);
+
+
 
 
 </script>

@@ -49,7 +49,7 @@
     (function($){
         function processForm( e ){
             $.ajax({
-                url: 'http://localhost:8080/user/getLocation/latest/'+$('#userId').val(),
+                url: 'http://localhost:8080/v1/user/mobileLoction/latest/'+$('#userId').val(),
                 dataType: 'text',
                 type: 'get',
                 contentType: 'application/json',
