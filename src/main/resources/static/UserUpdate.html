@@ -59,7 +59,7 @@
             <input type="text" class="form-control" id="secondName" placeholder="Enter Second Name" name="secondName">
         </div>
         <input type="hidden" id="hiddenUserId" name="hiddenUserId">
-        <button type="submit" class="btn btn-default">Update</button>
+        <button type="button" class="btn btn-default" id="button">Update</button>
     </form>
 </div>
 
@@ -72,7 +72,7 @@
     (function($){
         function processForm( e ){
             $.ajax({
-                url: 'http://localhost:8080/user/getLocation/latest/'+$('#userId').val(),
+                url: 'http://localhost:8080/v1/user/mobileLoction/latest/'+$('#userId').val(),
                 dataType: 'text',
                 type: 'get',
                 contentType: 'application/json',
@@ -112,18 +112,22 @@
     return data.slice(0, 23);
     }
 
-function chkUserId(userId){
-    alert(" " + userId); return false;
+
+
+function prePareJsonStr(userId, createdOn, email, firstName, secondName){
+    let jsonStr = "{\"userId\": \""+ userId + "\", \"createdOn\": \""  + dateFormatISO(createdOn) + "\",\"email\": \"" + email + "\",\"firstName\": \"" + firstName + "\",\"secondName\": \"" + secondName + "\"}";
+    return jsonStr;
+
 }
 
     (function($){
         function processForm( e ){
             $.ajax({
-                url: 'http://localhost:8080/user/add',
+                url: 'http://localhost:8080/v1/user/add',
                 dataType: 'text',
                 type: 'post',
                 contentType: 'application/json',
-                data: JSON.stringify( { "userId": chkUserId($('#hiddenUserId').val()) ,"createdOn": dateFormatISO($('#createdOn').val()),"email": $('#email').val(), "firstName": $('#firstName').val() , "secondName": $('#secondName').val()} ),
+                data: prePareJsonStr($('#hiddenUserId').val(), $('#createdOn').val(), $('#email').val(), $('#firstName').val(), $('#secondName').val() ) ,
                 success: function( data, textStatus, jQxhr ){
                    $('#response pre').html( data );
                 },
@@ -138,7 +142,7 @@ function chkUserId(userId){
             e.preventDefault();
         }
 
-        $('#my-form').submit( processForm );
+        $('#button').click( processForm );
     })(jQuery);
 
 
