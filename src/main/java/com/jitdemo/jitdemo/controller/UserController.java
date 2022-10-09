@@ -8,6 +8,7 @@ import com.jitdemo.jitdemo.model.User;
 import com.jitdemo.jitdemo.service.LocationService;
 import com.jitdemo.jitdemo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
+@RequestMapping("/${spring.api.version}/${spring.api.user}")
 public class UserController {
 
     @Autowired
@@ -26,7 +28,7 @@ public class UserController {
     private LocationService locationService;
 
     //funcation to create OR update user
-    @PostMapping("/user/add")
+    @PostMapping("/${spring.api.user.add}")
     public ResponseEntity<String> addUser(@RequestBody User user){
         ResponseEntity<String> response = null;
         String userId = userService.checkUserByEmail(user.getEmail());
@@ -59,7 +61,7 @@ public class UserController {
 
 
     //funcation to handle mobile request
-    @PostMapping("/user/add/mobileLoc")
+    @PostMapping("${spring.api.user.add}/${spring.api.user.mobile.location.add}")
     public ResponseEntity<String> addMobiileLocation(@RequestBody String userMobileLocation) throws JsonProcessingException {
 
         ResponseEntity<String> response = null;
@@ -106,10 +108,9 @@ public class UserController {
 
 
     //Ger user's details per userId
-    @GetMapping("/user/getLocation/latest/{userId}")
+    @GetMapping("/${spring.api.user.mobile.location.add}/latest/{userId}")
     @ResponseBody
     public ResponseEntity<String> getLatestUserLocation(@PathVariable("userId") UUID userId) throws JsonProcessingException {
-
         ResponseEntity<String> response = null;
         String userLatestLocationJsonStr = null;
 
@@ -124,7 +125,7 @@ public class UserController {
     }
 
 
-    @GetMapping("/user/getLocation/fromDates/{userId}/{fromDate}/{toDate}")
+    @GetMapping("/${spring.api.user.mobile.location.add}/fromDates/{userId}/{fromDate}/{toDate}")
     @ResponseBody
     public ResponseEntity<String> getUserLocationsFromDates(@PathVariable("userId") UUID userId, @PathVariable("fromDate") String fromDate, @PathVariable("toDate") String toDate) throws ParseException, JsonProcessingException {
         ResponseEntity<String> response = null;

@@ -16,10 +16,10 @@
             <a class="navbar-brand" href="./">WebSiteName</a>
         </div>
         <ul class="nav navbar-nav">
-            <li class="active"><a href="./index.html">Create User</a></li>
+            <li><a href="./index.html">Create User</a></li>
             <li><a href="./UserUpdate.html">Update User</a></li>
             <li><a href="./UserLatestLocation.html">Get User's Latest Location</a></li>
-            <li><a href="./UserLocationsByDate.html">User's Locations Date Range</a></li>
+            <li class="active"><a href="./UserLocationsByDate.html">User's Locations Date Range</a></li>
             <li><a href="./MobileLocationInsert.html">User's Mobile Locations Add</a></li>
         </ul>
     </div>
@@ -27,7 +27,10 @@
 
 
 <div class="container">
-    <h2>Vertical (basic) form</h2>
+    <h2>Add user mobile location in json format</h2>
+    <div id="response">
+        <pre></pre>
+    </div>
     <form action="">
         <div class="form-group">
             <label for="email">Email:</label>
@@ -45,3 +48,14 @@
 </div>
 </body>
 </html>
+<script>
+    let today = new Date("2020-11-08 17:19:01.0");
+ data = today.toISOString("yyy-MM-dd'T'HH:mm:ss.S");
+ //alert(data.slice(0, 23));
+
+ var uuidData = Uuid.fromString('963126c2-ce15-46df-bbba-381b9db37e29');
+//var uuidString = uuidData.toString();
+ alert(uuidData);
+
+
+</script>
