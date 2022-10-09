@@ -50,7 +50,7 @@ class UserControllerTest {
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
 
-        User userToAdd = new User(null, cDate, "junit@test.com",
+        User userToAdd = new User(null, dDate, "junit@test.com",
                 "junitFirstName", "junitSecondName" );
 
         ResponseEntity<?> responseEntity = userController.addUser(userToAdd);
@@ -71,7 +71,7 @@ class UserControllerTest {
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
 
-        User userToAdd = new User(UUID.randomUUID(), cDate, "junit@test.com",
+        User userToAdd = new User(UUID.randomUUID(), dDate, "junit@test.com",
                 "junitFirstName", "junitSecondName" );
 
         ResponseEntity<?> responseEntity = userController.addUser(userToAdd);
@@ -107,7 +107,8 @@ class UserControllerTest {
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
         ResponseEntity<?> responseEntity = userController.getLatestUserLocation(UUID.randomUUID());
-        assertThat(responseEntity.getStatusCode()).isEqualTo(208);
+        System.out.println(responseEntity.getStatusCode());
+        assertThat(responseEntity.getStatusCode().toString()).isEqualTo("200 OK");
     }
 
 

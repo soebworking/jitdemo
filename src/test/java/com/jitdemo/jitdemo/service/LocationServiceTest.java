@@ -50,10 +50,10 @@ public class LocationServiceTest {
         Date fDate = df.parse(fromDate);
         Date tDate = df.parse(toDate);
 
-        User userToAdd = new User(null, creationDate, "junit@test.com",
+        User userToAdd = new User(null, fromDate, "junit@test.com",
                 "junitFirstName", "junitSecondName" );
 
-        Locations locations = new Locations(1, creationDate, 27.540583401747602 , 26.540583401747602, userToAdd );
+        Locations locations = new Locations(1, fromDate, 27.540583401747602 , 26.540583401747602, userToAdd );
         List<Locations> locationsList = new ArrayList<Locations>();
         locationsList.add(locations);
 
