@@ -14,14 +14,15 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     String existsByEmail(String email);
 
-    @Query(nativeQuery = true, value = "Select  u.id as userId, l.location_created_on as locationCreatedOn, " +
-            "    u.email as email, u.first_name as firstName, u.second_name as secondName, " +
-            "    l.latitude as latitude, l.longitude as longitude " +
-            "    from user as u inner join locations l " +
-            "    on u.id = l.user_id " +
-            "    Where " +
-            "    u.id = ?1 " +
-            "    And l.location_id = (select location_id from locations order by STR_TO_DATE(location_created_on,'%Y-%m-%dT%H:%i:%s') desc limit 1 )")
+    @Query(nativeQuery = true, value = "Select  u.id as userId, l.location_created_on as locationCreatedOn,  " +
+            "u.email as email, u.first_name as firstName, u.second_name as secondName,    " +
+            "l.latitude as latitude, l.longitude as longitude     from user as u inner join locations l   " +
+            "on u.id = l.user_id  " +
+            "Where       " +
+            " u.id =  " +
+            "(select user_id from locations where  user_id = ?1 " +
+            "order by STR_TO_DATE(location_created_on,'%Y-%m-%dT%H:%i:%s') desc limit 1 ) " +
+            "order by STR_TO_DATE(l.location_created_on,'%Y-%m-%dT%H:%i:%s') desc limit 1")
     LatestUserLocation getLatestUserLocationById(String uuid);
 
 }
